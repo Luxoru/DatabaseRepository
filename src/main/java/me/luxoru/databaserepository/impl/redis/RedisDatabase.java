@@ -4,10 +4,8 @@ import lombok.Getter;
 import me.luxoru.databaserepository.IDatabase;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
-import org.redisson.config.Config;
 import org.redisson.config.MasterSlaveServersConfig;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +23,11 @@ public class RedisDatabase implements IDatabase<RedisConfigurations> {
     public RedisDatabase connect(RedisConfigurations configurations) {
         MasterSlaveServersConfig config = configurations.getConfig();
 
+        if(nodes.isEmpty()){
+            throw new IllegalArgumentException("Cannot have 0 nodes when connecting to server.");
+        }
+
+
         for(RedisNode node : nodes){
             if(node.getType() == RedisNodeType.MASTER){
                 config.setMasterAddress("redis://"+node.getHost()+":"+node.getPort());
@@ -36,6 +39,11 @@ public class RedisDatabase implements IDatabase<RedisConfigurations> {
                 config.setPassword(node.getPassword());
             }
         }
+
+
+
+
+
 
         RedisCustomConfig redisConfig = new RedisCustomConfig();
         redisConfig.setMasterSlaveServersConfig(config);

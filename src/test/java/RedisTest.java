@@ -20,7 +20,7 @@ public class RedisTest {
     @Test
     public void connect(){
          this.database = new RedisDatabase()
-                .addMasterNode(new RedisNode("MASTER", "127.0.0.1",RedisConfigurations.DEFAULT_PORT, RedisNodeType.MASTER))
+                .addSlaveNode(new RedisNode("MASTER", "127.0.0.1",RedisConfigurations.DEFAULT_PORT, RedisNodeType.SLAVE))
                 .connect(new RedisConfigurations(0));
 
          this.client = database.getClient();
