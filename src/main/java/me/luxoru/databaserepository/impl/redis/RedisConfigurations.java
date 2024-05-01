@@ -2,7 +2,6 @@ package me.luxoru.databaserepository.impl.redis;
 
 import lombok.Getter;
 import me.luxoru.databaserepository.configurations.AuthenticationConfigurations;
-import org.redisson.config.Config;
 import org.redisson.config.MasterSlaveServersConfig;
 
 @Getter
