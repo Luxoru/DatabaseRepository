@@ -1,11 +1,13 @@
 package me.luxoru.databaserepository.impl.redis;
 
+import lombok.Getter;
 import me.luxoru.databaserepository.IDatabase;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.redisson.config.MasterSlaveServersConfig;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,9 +15,14 @@ public class RedisDatabase implements IDatabase<RedisConfigurations> {
 
     private final Set<RedisNode> nodes = new HashSet<>();
     private final Object LOCK = new Object();
+    @Getter
+    private RedissonClient client;
+    @Getter
+    private RedisMessangerService messangerService;
+
 
     @Override
-    public IDatabase<RedisConfigurations> connect(RedisConfigurations configurations) {
+    public RedisDatabase connect(RedisConfigurations configurations) {
         MasterSlaveServersConfig config = configurations.getConfig();
 
         for(RedisNode node : nodes){
@@ -30,9 +37,13 @@ public class RedisDatabase implements IDatabase<RedisConfigurations> {
             }
         }
 
-        Config redisConfig = new Config();
+        RedisCustomConfig redisConfig = new RedisCustomConfig();
+        redisConfig.setMasterSlaveServersConfig(config);
 
-        return null;
+        this.client = Redisson.create(redisConfig);
+        this.messangerService = new RedisMessangerService(this);
+
+        return this;
 
     }
 
@@ -79,6 +90,10 @@ public class RedisDatabase implements IDatabase<RedisConfigurations> {
             }
         }
         return null;
+    }
+
+    public Set<RedisNode> getNodes(){
+        return Set.copyOf(nodes);
     }
 
 
