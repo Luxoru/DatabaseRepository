@@ -5,6 +5,8 @@ import me.luxoru.databaserepository.configurations.DatabaseConfigurations;
 
 public interface IDatabase<E extends DatabaseConfigurations> {
 
-    IDatabase<E> connect(E configurations);
+    default IDatabase<E> connect(E configurations){
+        return null;
+    }
 
 }
