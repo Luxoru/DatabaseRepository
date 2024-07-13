@@ -5,11 +5,12 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.redisson.api.RedissonClient;
 
+import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.Assert.assertEquals;
 
-@Slf4j(topic = "RedisTest")
+
 public class RedisTest {
 
 
@@ -20,10 +21,11 @@ public class RedisTest {
     @Test
     public void connect(){
          this.database = new RedisDatabase()
-                .addSlaveNode(new RedisNode("SLAVE", "127.0.0.1",RedisConfigurations.DEFAULT_PORT, RedisNodeType.SLAVE))
+                .addMasterNode(new RedisNode("SLAVE", "127.0.0.1",RedisConfigurations.DEFAULT_PORT, RedisNodeType.MASTER))
                 .connect(new RedisConfigurations(0));
 
          this.client = database.getClient();
+
     }
 
 
@@ -38,7 +40,7 @@ public class RedisTest {
 
         int valueReceived = (int) client.getBucket("number").get();
 
-        log.debug("Value set {} and received {}", number, valueReceived);
+
 
         assertEquals(number, valueReceived);
 
@@ -46,15 +48,39 @@ public class RedisTest {
     }
 
     @Test
+    public void test(){
+        String channel = "redis:COMMAND";
+        System.out.println(Arrays.toString(channel.split(":")));
+    }
+
+    @Test
     public void subAndPub() throws InterruptedException {
         connect();
 
+        database.getMessangerService().addSubscriber(new RedisMessenger() {
 
+            @Override
+            public void onPMessage(String pattern, String channel, String message) {
+                System.out.println("Received: " + message);
+                System.out.println("Channel: "+channel);
+            }
+
+            @Override
+            public String[] getChannels() {
+                return new String[]{"test.*"};
+            }
+
+            @Override
+            public boolean isUsingPatterns() {
+                return true;
+            }
+        });
 
         Thread.sleep(1000);
 
-        database.getMessangerService().dispatch("test", "WHAT IS UP!");
 
+        database.getMessangerService().dispatch("test.sus", "SUSSY WHAT IS UP!");
+        database.getMessangerService().dispatch("test.sadas.xs", "SADSA WHAT IS UP!");
 
     }
 
