@@ -1,6 +1,7 @@
 package me.luxoru.databaserepository.impl.redis;
 
 import lombok.NonNull;
+import org.redisson.api.RPatternTopic;
 import org.redisson.api.RTopic;
 import org.redisson.api.RedissonClient;
 
@@ -23,9 +24,12 @@ public class RedisMessangerService {
     public void addSubscriber(@NonNull RedisMessenger messenger, Consumer<Throwable> onException){
 
         for(String channel : messenger.getChannels()){
+
+            
+
             RTopic topic = client.getTopic(channel);
             topic.addListenerAsync(String.class, (channelName, message) ->{
-                messenger.onMessage(channel, message);
+                messenger.onMessage(channelName.toString(), message);
             }).exceptionally(throwable -> {
                 if(onException != null){
                     onException.accept(throwable);
