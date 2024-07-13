@@ -3,6 +3,7 @@ package me.luxoru.databaserepository.impl.redis;
 import lombok.Getter;
 import me.luxoru.databaserepository.configurations.AuthenticationConfigurations;
 import org.redisson.config.MasterSlaveServersConfig;
+import org.redisson.config.ReadMode;
 
 @Getter
 public class RedisConfigurations extends AuthenticationConfigurations{
@@ -21,6 +22,7 @@ public class RedisConfigurations extends AuthenticationConfigurations{
                 .setDatabase(databaseNumber)
                 .setIdleConnectionTimeout(1000)
                 .setTimeout(1000)
+                .setReadMode(ReadMode.MASTER)
                 .setSlaveConnectionMinimumIdleSize(5);
 
     }
