@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Getter
-
 public abstract class Column<T> {
 
     private final String name;
