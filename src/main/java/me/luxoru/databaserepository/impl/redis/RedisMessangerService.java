@@ -25,7 +25,18 @@ public class RedisMessangerService {
 
         for(String channel : messenger.getChannels()){
 
-            
+            if(messenger.isUsingPatterns()){
+                RPatternTopic topic = client.getPatternTopic(channel);
+                topic.addListenerAsync(String.class, (pattern, channelName, message) ->{
+                    messenger.onPMessage(pattern.toString(), channelName.toString(), message);
+                }).exceptionally(throwable -> {
+                    if(onException != null){
+                        onException.accept(throwable);
+                    }
+                    return null;
+                });
+                return;
+            }
 
             RTopic topic = client.getTopic(channel);
             topic.addListenerAsync(String.class, (channelName, message) ->{
