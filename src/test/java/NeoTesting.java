@@ -1,5 +1,6 @@
 import me.luxoru.databaserepository.configurations.AuthenticationConfigurations;
 import me.luxoru.databaserepository.configurations.URIConfigurations;
+import me.luxoru.databaserepository.impl.neo4j.NeoConfigurations;
 import me.luxoru.databaserepository.impl.neo4j.NeoDatabase;
 
 import me.luxoru.databaserepository.impl.neo4j.NeoRepository;
@@ -20,10 +21,10 @@ class NeoTesting {
     void init(){
 
         databaseProvider = new NeoDatabase("neo4j");
-        databaseProvider.connect( new URIConfigurations(
+        databaseProvider.connect( new NeoConfigurations(
                 "bolt://localhost:7687",
-                new AuthenticationConfigurations("", -1, "neo4j", "password")
-        ));
+                "neo4j", "password")
+        );
         isConnected = databaseProvider.isConnected();
 
         repository = new NeoRepository(databaseProvider);
