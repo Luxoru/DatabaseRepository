@@ -9,4 +9,6 @@ public interface IDatabase<E extends DatabaseConfigurations> {
         return null;
     }
 
+    boolean isConnected();
+
 }
