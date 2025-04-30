@@ -17,7 +17,7 @@ public class RedisDatabase implements IDatabase<RedisConfigurations> {
     private RedissonClient client;
     @Getter
     private RedisMessangerService messangerService;
-
+    private boolean connected;
 
     @Override
     public RedisDatabase connect(RedisConfigurations configurations) {
@@ -43,6 +43,11 @@ public class RedisDatabase implements IDatabase<RedisConfigurations> {
 
         return this;
 
+    }
+
+    @Override
+    public boolean isConnected() {
+        return connected;
     }
 
     public RedisDatabase addMasterNode(String nodeName, String host, int port){
