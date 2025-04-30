@@ -1,6 +1,7 @@
-package me.luxoru.databaserepository.impl.neo4j;
+package me.luxoru.databaserepository.impl.neo4j.query;
 
 import lombok.RequiredArgsConstructor;
+import me.luxoru.databaserepository.impl.neo4j.Node;
 
 import java.util.Map;
 
@@ -10,11 +11,9 @@ public class UpdateQueryBuilder {
     private final NeoQueryBuilder queryBuilder;
 
 
-    private StringBuilder builder = new StringBuilder();
+    private final StringBuilder builder = new StringBuilder();
 
     public UpdateQueryBuilder update(char oldChar, Node newNode){
-
-
 
         for(Map.Entry<String, Object> entry: newNode.getProperties().entrySet()){
             builder.append(" SET ");

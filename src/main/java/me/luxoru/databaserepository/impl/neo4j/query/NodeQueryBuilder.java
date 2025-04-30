@@ -1,8 +1,10 @@
-package me.luxoru.databaserepository.impl.neo4j;
+package me.luxoru.databaserepository.impl.neo4j.query;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.scripted.commons.StringUtils;
+import me.luxoru.databaserepository.impl.neo4j.Node;
+import me.luxoru.databaserepository.utils.StringUtils;
+
 
 @RequiredArgsConstructor
 @Getter

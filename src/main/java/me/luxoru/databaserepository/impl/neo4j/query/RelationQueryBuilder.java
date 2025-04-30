@@ -1,4 +1,4 @@
-package me.luxoru.databaserepository.impl.neo4j;
+package me.luxoru.databaserepository.impl.neo4j.query;
 
 public class RelationQueryBuilder {
 

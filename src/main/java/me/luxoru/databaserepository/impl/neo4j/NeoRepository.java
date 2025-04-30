@@ -1,5 +1,6 @@
-package net.scripted.database.neo4j;
+package me.luxoru.databaserepository.impl.neo4j;
 
+import me.luxoru.databaserepository.impl.neo4j.query.NeoQueryBuilder;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.SessionConfig;
 import org.neo4j.driver.Value;
@@ -12,11 +13,10 @@ import java.util.concurrent.CompletableFuture;
 
 public class NeoRepository {
 
-    private final Driver driver;
+    private final NeoDatabase database;
 
-
-    public NeoRepository(Driver driver){
-        this.driver = driver;
+    public NeoRepository(NeoDatabase database){
+        this.database = database;
     }
 
     public CompletableFuture<Node> createNode(Node node){
@@ -52,9 +52,6 @@ public class NeoRepository {
                     .build()
                 .withReturn(true)
                 .build();
-
-
-        System.out.println(query);
 
         return executeQuery(session, query).thenCompose(nodes -> {
             if(nodes.isEmpty()){
@@ -103,8 +100,6 @@ public class NeoRepository {
                     .create()
                 .withReturn(true)
                 .build();
-
-        System.out.println(query);
 
         return executeQuery(session, query)
                 .thenCompose(nodes -> {
@@ -228,9 +223,9 @@ public class NeoRepository {
     }
 
     private AsyncSession createSession() {
-        return driver.session(
+        return database.getDriver().session(
                 AsyncSession.class,
-                SessionConfig.builder().withDatabase("neo4j").build()
+                SessionConfig.builder().withDatabase(database.getDatabase()).build()
         );
     }
 }

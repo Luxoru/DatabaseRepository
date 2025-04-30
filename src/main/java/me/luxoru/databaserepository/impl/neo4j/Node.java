@@ -1,11 +1,10 @@
-package net.scripted.database.neo4j;
+package me.luxoru.databaserepository.impl.neo4j;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Getter
