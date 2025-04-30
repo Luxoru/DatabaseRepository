@@ -10,7 +10,7 @@ import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
 
 @RequiredArgsConstructor
-public class NeoDatabase implements IDatabase<URIConfigurations> {
+public class NeoDatabase implements IDatabase<NeoConfigurations> {
 
     @Getter
     private Driver driver;
@@ -19,10 +19,10 @@ public class NeoDatabase implements IDatabase<URIConfigurations> {
     private boolean connected;
 
     @Override
-    public IDatabase<URIConfigurations> connect(URIConfigurations configurations) {
+    public IDatabase<NeoConfigurations> connect(NeoConfigurations configurations) {
         String uri = configurations.getURI();
-        String user  = configurations.getAuthenticationConfigurations().getUsername();
-        String pass = configurations.getAuthenticationConfigurations().getPassword();
+        String user  = configurations.getUsername();
+        String pass = configurations.getPassword();
         System.out.println("URI: "+uri);
         System.out.println("Username: "+user);
         System.out.println("Password: "+pass);
