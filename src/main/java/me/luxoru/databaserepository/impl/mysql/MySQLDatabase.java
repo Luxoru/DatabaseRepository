@@ -20,6 +20,7 @@ public class MySQLDatabase implements IDatabase<AuthenticationConfigurations> {
     private final String databaseName;
     private HikariDataSource dataSource;
     private Connection connection;
+    private boolean connected;
 
     @Override
     public MySQLDatabase connect(AuthenticationConfigurations configurations){
@@ -41,11 +42,17 @@ public class MySQLDatabase implements IDatabase<AuthenticationConfigurations> {
             throw new RuntimeException(e);
         }
 
+        this.connected = true;
+
 
         return this;
 
     }
 
+    @Override
+    public boolean isConnected() {
+        return connected;
+    }
 
 
     public MySQLContainer createContainer(){
